@@ -4,7 +4,7 @@ from datetime import timedelta
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-#fhp7=k1evo2mea1qr$2mj6d-fok0b^z*c!*-_ccej6(o8#zqz'
-ALLOWED_HOSTS = ['your-app.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 DEBUG = False
 
 INSTALLED_APPS = [
