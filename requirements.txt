@@ -4,3 +4,4 @@ djangorestframework-simplejwt
 gunicorn
 whitenoise
 django-cors-headers
+drf-yasg
