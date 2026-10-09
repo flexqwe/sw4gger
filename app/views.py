@@ -19,6 +19,7 @@ from app.serializers import (
     ConfirmPasswordSerializer,
     ResetPasswordSerializer
 )
+# Исправлено на относительный импорт из корня проекта через точку или app
 from services.pre_token import make_pre_token, get_user
 from app.services.email_service import send_verification_code, confirm_code, finish_code
 
