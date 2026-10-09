@@ -1,4 +1,3 @@
-
 from datetime import timedelta
 from django.utils import timezone
 
@@ -10,10 +9,17 @@ from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from app.models import Product, EmailCode, User
-from app.serializers import ProductSerializer, VerifyEmailSerializer, ResendCodeSerializer
-from serializers import ForgotPasswordSerializer, ConfirmPasswordSerializer, ResetPasswordSerializer
+from app.serializers import (
+    ProductSerializer,
+    VerifyEmailSerializer,
+    ResendCodeSerializer,
+    RegisterSerializer,
+    LogoutSerializer,
+    ForgotPasswordSerializer,
+    ConfirmPasswordSerializer,
+    ResetPasswordSerializer
+)
 from services.pre_token import make_pre_token, get_user
-from app.serializers import RegisterSerializer, LogoutSerializer
 from app.services.email_service import send_verification_code, confirm_code, finish_code
 
 
@@ -150,6 +156,8 @@ class ResendCodeView(generics.GenericAPIView):
             send_verification_code(user)
 
         return Response({"detail": "Agar bunday email ro'yxatdan o'tgan bo'lsa, kod yuborildi"})
+
+
 class ForgotPasswordView(generics.GenericAPIView):
     serializer_class = ForgotPasswordSerializer
     permission_classes = [AllowAny]
@@ -161,11 +169,12 @@ class ForgotPasswordView(generics.GenericAPIView):
 
         user = User.objects.filter(email=email, is_active=True).first()
         if user:
-            send_verification_code(user)   # register'dagi funksiya
+            send_verification_code(user)
 
-        # email yo'q bo'lsa ham javob bir xil (user_id=0)
         user_id = user.id if user else 0
         return Response({"pre_token": make_pre_token(user_id)})
+
+
 class ConfirmPasswordView(generics.GenericAPIView):
     serializer_class = ConfirmPasswordSerializer
     permission_classes = [AllowAny]
@@ -178,6 +187,8 @@ class ConfirmPasswordView(generics.GenericAPIView):
         user = get_user(data["pre_token"])
         confirm_code(user, data["code"])
         return Response({"detail": "Kod to'g'ri. Yangi parol kiriting."})
+
+
 class ResetPasswordView(generics.GenericAPIView):
     serializer_class = ResetPasswordSerializer
     permission_classes = [AllowAny]
@@ -188,7 +199,7 @@ class ResetPasswordView(generics.GenericAPIView):
         data = serializer.validated_data
 
         user = get_user(data["pre_token"])
-        finish_code(user)          # kod tasdiqlanmagan bo'lsa — 400
+        finish_code(user)
         user.set_password(data["new_password"])
         user.save()
         return Response({"detail": "Parol yangilandi."})
