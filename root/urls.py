@@ -30,7 +30,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     # Root URL - redirect to Swagger UI
-
+    path('', lambda request: HttpResponse('<h1></h1><p>Visit <a href="/swagger/">Swagger UI</a> </p>')),
     path('admin/', admin.site.urls),
 
     path('swagger<str:format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
