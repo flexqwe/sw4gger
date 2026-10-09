@@ -16,6 +16,7 @@ from app.views import (
     MeView,
     ResendCodeView,
 )
+from views import ForgotPasswordView, ConfirmPasswordView, ResetPasswordView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -46,4 +47,7 @@ urlpatterns = [
     path('api/resend-code/', ResendCodeView.as_view()),
     path('api/logout/', LogoutView.as_view()),
     path('api/me/', MeView.as_view()),
+    path("forgot-password/", ForgotPasswordView.as_view()),
+    path("confirm-password/", ConfirmPasswordView.as_view()),
+    path("reset-password/", ResetPasswordView.as_view()),
 ]
